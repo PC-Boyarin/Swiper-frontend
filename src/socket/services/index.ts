@@ -21,7 +21,7 @@ export interface ClientToServerEvents {
 
 // URL сервера. В production можно заменить на переменную окружения
 // const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:4000';
-const SOCKET_URL = 'http://localhost:3001';
+const SOCKET_URL = 'http://217.177.74.174:5173';
 
 // Создаём типизированный сокет [citation:2]
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(SOCKET_URL, {

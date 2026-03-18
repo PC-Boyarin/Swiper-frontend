@@ -37,15 +37,18 @@ export function ChatArea({ channelId }: ChatAreaProps) {
   const { emit } = useSocketEmit();
 
   useEffect(() => {
-    setMessages([])
-    getAllMessagesHandler()
+
+    if( channelId ) {
+      // setMessages([])
+      getAllMessagesHandler()
+    }
   }, [channelId]);
 
 // Подписка на новые сообщения
   useSocketEvent('message:new', (message) => {
-    // console.log('messageNEW', message);
+    console.log('messageNEW', message, channelId);
 
-    if (message.channel_id === channelId) {
+    if (Number(message.channel_id) === channelId) {
       setMessages((prev) => [...prev, message]);
     }
 
@@ -86,18 +89,17 @@ export function ChatArea({ channelId }: ChatAreaProps) {
 
   const handleTyping = () => {
     if (!isConnected) return;
-    emit('typing:start', channelId);
+    emit('typing:start', String(channelId));
 
     // Автоматически останавливаем через 3 секунды
     setTimeout(() => {
-      emit('typing:stop', channelId);
+      emit('typing:stop', String(channelId));
     }, 3000);
   };
 
-  const handleKeyPress = (event) => {
-    console.log('qwe2')
-    if(event.key === 'Enter'){
-      // createMessageHandler()
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+
+    if(event.key === 'Enter') {
       sendMessage()
     }
   };

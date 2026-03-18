@@ -20,13 +20,14 @@ function LoaderHandler({isLoading, children}: LoaderHandlerProps) {
     if(isLoading) {
         return <Loader/>
     }
+
     return <>{children}</>
 }
 
 export default function MainWrapper({isLoading, isLoggedIn, userId}: MainWrapperProps) {
 
     const [isLogged, setIsLogged] = useState<boolean | null>(isLoggedIn)
-    const [channelId, setChannelId] = useState(null);
+    const [channelId, setChannelId] = useState<null | number>(null);
 
     useEffect(() => {
 
@@ -41,7 +42,7 @@ export default function MainWrapper({isLoading, isLoggedIn, userId}: MainWrapper
             <LoaderHandler isLoading={isLoading}>
                 {isLogged && !isLoading ? (
                     <div className="flex h-screen bg-[#36393f] text-yellow">
-                        <Sidebar />
+                        <Sidebar userId={userId} />
                         <ChannelList userId={userId} setChannelId={setChannelId}/>
                         <ChatArea channelId={channelId}/>
                     </div>
