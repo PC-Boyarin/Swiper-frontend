@@ -27,7 +27,7 @@ export function Sidebar({ userId }: SidebarProps) {
   // }, [userId])
 
     const {data: servers } = useServers(userId)
-    console.log('servers', servers)
+    // console.log('servers', servers)
   return (
     <div className="w-[72px] bg-[#202225] flex flex-col items-center py-3 gap-2">
       {/* Home Button */}
@@ -47,7 +47,7 @@ export function Sidebar({ userId }: SidebarProps) {
         >
           <span className="text-2xl">{server.icon}</span>
         </button>
-      ))}
+      )) || []}
 
       {/* Add Server Button */}
       <button className="w-12 h-12 bg-[#36393f] hover:bg-[#3ba55d] rounded-[24px] hover:rounded-[16px] transition-all duration-200 flex items-center justify-center group">
