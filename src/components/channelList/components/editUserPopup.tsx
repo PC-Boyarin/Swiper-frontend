@@ -33,7 +33,7 @@ export default function EditUserPopup({isOpen, onOpenChange, currentUser}: EditU
             const body = {
                 username: userName,
                 image_icon: selectedImage?.preview,
-                user_id: 1,
+                user_id: currentUser?.id,
             }
             //@ts-ignore
             const response = await updateUser(body)

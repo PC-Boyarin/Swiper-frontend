@@ -68,7 +68,7 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
 
   async function getUserDataHandler() {
     try {
-      const response = await getCurrentUser({id: 1})
+      const response = await getCurrentUser({id: userId})
       if(response) {
          setCurrentUser(response?.data)
       }
