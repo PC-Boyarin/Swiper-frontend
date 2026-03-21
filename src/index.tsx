@@ -1,5 +1,5 @@
 import {Sidebar} from "./components/Sidebar.tsx";
-import {ChannelList} from "./components/ChannelList.tsx";
+import {ChannelList} from "./components/channelList/ChannelList.tsx";
 import {ChatArea} from "./components/ChatArea.tsx";
 import {LoginRegister} from "./components/LoginRegister.tsx";
 import Loader from "./components/customUi/loading";

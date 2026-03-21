@@ -24,11 +24,11 @@ export const searchUser: (username: string) => Promise<AxiosResponse<any>> = asy
 	return await baseServer.post('/user/search', {username: username, id: 3})
 }
 
-export const getUser: () => Promise<AxiosResponse<any>> = async() => {
-	return await baseServer.get(`/user`)
+export const getCurrentUser: (body: any) => Promise<AxiosResponse<any>> = async(body: any) => {
+	return await baseServer.post(`/user/currentUser`, body)
 }
 
-export const changeUser: (body: User) => Promise<AxiosResponse<any>> = async(body) => {
+export const updateUser: (body: User) => Promise<AxiosResponse<any>> = async(body) => {
 	return await baseServer.put('/user/update', body)
 }
 

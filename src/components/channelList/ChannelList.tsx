@@ -2,13 +2,15 @@
 
 import { Hash, Volume2, ChevronDown, Plus, Mic, Headphones, Settings as SettingsIcon } from 'lucide-react';
 import {useEffect, useState} from "react";
-import {createChannel, getAllChannels} from "../api/channels.ts";
-import {Dialog, DialogContent, DialogHeader, DialogTitle} from "./ui/dialog.tsx";
-import CustomSelect from "./customUi/Select";
-import { Input } from "./ui/input.tsx";
-import {Switch} from "./ui/switch.tsx";
-import {Button} from "./ui/button.tsx";
-import type {Channel} from "../types/Channel.ts";
+import {createChannel, getAllChannels} from "../../api/channels.ts";
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from "../ui/dialog.tsx";
+import CustomSelect from "../customUi/Select";
+import { Input } from "../ui/input.tsx";
+import {Switch} from "../ui/switch.tsx";
+import {Button} from "../ui/button.tsx";
+import type {Channel} from "../../types/Channel.ts";
+import EditUserPopup from "./components/editUserPopup.tsx";
+import {getCurrentUser} from "../../api/user.ts";
 
 type ChannelListType = {
   userId: number | null
@@ -19,6 +21,8 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
   const [textChannels, setTextChannels] = useState<Channel[]>([])
   const [selectedChannels, setSelectedChannels] = useState('')
   const [isOpenCreateChannel, setIsOpenCreateChannel] = useState(false)
+  const [isEditUser, setIsEditUser] = useState(false)
+
   const voiceChannels = [
     { id: 1, name: 'Общий', users: 3 },
     { id: 2, name: 'Игровая', users: 0 },
@@ -49,12 +53,24 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
   ]
   const [channelName, setChannelName] = useState('')
   const [isChannelPrivate, setIsChannelPrivate] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null)
 
   async function getAllChannelsHandler() {
     try {
       const response = await getAllChannels({server_id: 2})
       if(response) {
         setTextChannels(response?.data || [])
+      }
+    } catch (err) {
+      console.log('getAllChannelsHandler', err);
+    }
+  }
+
+  async function getUserDataHandler() {
+    try {
+      const response = await getCurrentUser({id: 1})
+      if(response) {
+         setCurrentUser(response?.data)
       }
     } catch (err) {
       console.log('getAllChannelsHandler', err);
@@ -81,6 +97,7 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
 
   useEffect(() => {
     getAllChannelsHandler()
+    getUserDataHandler()
   }, [])
 
   return (
@@ -118,6 +135,8 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
             </div>
           </DialogContent>
         </Dialog>
+
+        <EditUserPopup onOpenChange={setIsEditUser} isOpen={isEditUser} currentUser={currentUser}/>
       </div>
 
       <div className="w-60 bg-[#2f3136] flex flex-col">
@@ -176,13 +195,17 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
 
         {/* User Panel */}
         <div className="h-[52px] bg-[#292b2f] px-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-[#5865f2] flex items-center justify-center">
-              <span>👤</span>
+          <div onClick={() => setIsEditUser(true)} className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-[#5865f2] flex items-center justify-center cursor-pointer">
+              {
+                currentUser?.image_icon ?
+                    <img className="rounded-full h-full" src={currentUser?.image_icon} alt="image_icon" /> :
+                    <span>👤</span>
+              }
             </div>
-            <div className="flex flex-col">
-              <span className="text-sm text-white">Пользователь</span>
-              <span className="text-xs text-[#b9bbbe]">#1234</span>
+            <div className="flex flex-col cursor-pointer">
+              <span className="text-sm text-white">{currentUser?.username ? currentUser?.username : 'Пользователь'} </span>
+              <span className="text-xs text-[#b9bbbe]">{currentUser?.id ? `Ваш ID: ${currentUser?.id}` : 'id'}</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
