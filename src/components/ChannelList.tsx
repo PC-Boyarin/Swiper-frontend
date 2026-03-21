@@ -141,11 +141,11 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
             {textChannels?.map((channel) => (
               <div
                 onClick={() => setChannelId(Number(channel?.id))}
-                key={channel.id}
+                key={channel?.id || ''}
                 className="flex items-center gap-2 px-2 py-1.5 mx-0.5 rounded cursor-pointer text-[#96989d] hover:bg-[#3c3f45] hover:text-[#dcddde] group"
               >
                 <Hash className="w-5 h-5" />
-                <span>{channel.name}</span>
+                <span>{channel?.name || ''}</span>
               </div>
             ))}
           </div>
