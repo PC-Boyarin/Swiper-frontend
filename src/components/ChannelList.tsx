@@ -138,7 +138,7 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
               </div>
               <Plus onClick={() => setIsOpenCreateChannel(!isOpenCreateChannel)} className="w-4 h-4 text-[#96989d] opacity-0 group-hover:opacity-100 cursor-pointer hover:text-[#dcddde]" />
             </div>
-            {textChannels.map((channel) => (
+            {textChannels?.map((channel) => (
               <div
                 onClick={() => setChannelId(Number(channel?.id))}
                 key={channel.id}
@@ -147,7 +147,7 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
                 <Hash className="w-5 h-5" />
                 <span>{channel.name}</span>
               </div>
-            ))}
+            )) || []}
           </div>
 
           {/* Voice Channels */}

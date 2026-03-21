@@ -146,7 +146,7 @@ export function ChatArea({ channelId }: ChatAreaProps) {
         </div>
 
         {/* Messages */}
-        {messages.map((msg) => (
+        {messages?.map((msg) => (
           <div key={msg.id} className={
             userId === msg.user_id ? `flex flex-row-reverse items-center gap-4 px-4 py-2 hover:bg-[#32353b] group relative` :
                 `flex gap-4 px-4 py-2 hover:bg-[#32353b] group`}>
@@ -164,7 +164,7 @@ export function ChatArea({ channelId }: ChatAreaProps) {
                 <p className="text-[#dcddde]">{msg?.content}</p>
             </div>
           </div>
-        ))}
+        )) || []}
       </div>
 
       {/* Message Input */}
