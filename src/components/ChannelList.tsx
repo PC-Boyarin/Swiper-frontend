@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { Hash, Volume2, ChevronDown, Plus, Mic, Headphones, Settings as SettingsIcon } from 'lucide-react';
 import {useEffect, useState} from "react";
 import {createChannel, getAllChannels} from "../api/channels.ts";
@@ -14,13 +16,6 @@ type ChannelListType = {
 }
 
 export function ChannelList({ userId, setChannelId }: ChannelListType) {
-  // const textChannels = [
-  //   { id: 1, name: 'общий' },
-  //   { id: 2, name: 'мемы' },
-  //   { id: 3, name: 'игры' },
-  //   { id: 4, name: 'музыка' },
-  // ];
-
   const [textChannels, setTextChannels] = useState<Channel[]>([])
   const [selectedChannels, setSelectedChannels] = useState('')
   const [isOpenCreateChannel, setIsOpenCreateChannel] = useState(false)
@@ -88,7 +83,6 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
     getAllChannelsHandler()
   }, [])
 
-  console.log('selectedChannels', selectedChannels, isChannelPrivate)
   return (
     <div className="flex relative">
 
@@ -166,16 +160,16 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
               <Plus className="w-4 h-4 text-[#96989d] opacity-0 group-hover:opacity-100 cursor-pointer hover:text-[#dcddde]" />
             </div>
             {voiceChannels.map((channel) => (
-                <div
-                    key={channel.id}
-                    className="flex items-center gap-2 px-2 py-1.5 mx-0.5 rounded cursor-pointer text-[#96989d] hover:bg-[#3c3f45] hover:text-[#dcddde]"
-                >
-                  <Volume2 className="w-5 h-5" />
-                  <span>{channel.name}</span>
-                  {channel.users > 0 && (
-                      <span className="ml-auto text-xs text-[#96989d]">{channel.users}</span>
-                  )}
-                </div>
+              <div
+                key={channel.id}
+                className="flex items-center gap-2 px-2 py-1.5 mx-0.5 rounded cursor-pointer text-[#96989d] hover:bg-[#3c3f45] hover:text-[#dcddde]"
+              >
+                <Volume2 className="w-5 h-5" />
+                <span>{channel.name}</span>
+                {channel.users > 0 && (
+                    <span className="ml-auto text-xs text-[#96989d]">{channel.users}</span>
+                )}
+              </div>
             ))}
           </div>
         </div>

@@ -1,6 +1,6 @@
 export interface ServerToClientEvents {
 	// События от сервера к клиенту
-	'message:new': (message: { id: string; text: string; userId: string; timestamp: number }) => void;
+	'message:new': (message: { id: string; text: string; userId: string; timestamp: number, channel_id: number }) => void;
 	'user:joined': (user: { id: string; username: string }) => void;
 	'user:left': (userId: string) => void;
 	'typing:start': (userId: string) => void;

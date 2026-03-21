@@ -8,6 +8,7 @@ export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(SOC
     autoConnect: false, // Контролируем подключение вручную
     reconnection: true,
     reconnectionAttempts: 5,
+    withCredentials: true,
     reconnectionDelay: 1000,
     transports: ['websocket'], // Опционально: только WebSocket
 });

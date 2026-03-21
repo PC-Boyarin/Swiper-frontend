@@ -1,32 +1,27 @@
+# Stage 1: Build
 FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-RUN apk add --no-cache python3 make g++
+# Install deps first (better caching)
+COPY package.json package-lock.json ./
+RUN npm install --no-audit --no-fund --legacy-peer-deps
 
-COPY package.json ./
-RUN npm install
-
+# Copy source
 COPY . .
-RUN npx tsc
 
-FROM node:22-alpine
+# Build (includes tsc check + vite build)
+RUN npm run build
 
-WORKDIR /app
+# Stage 2: Serve
+FROM nginx:alpine
 
-RUN apk add --no-cache python3 make g++
+# Copy built assets
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-COPY package.json ./
-RUN npm install --omit=dev
+# Optional: custom nginx config
+# COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=builder /app/dist ./dist
+EXPOSE 80
 
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001 && \
-    chown -R nodejs:nodejs /app
-
-USER nodejs
-
-EXPOSE 3000
-
-CMD ["node", "dist/index.js"]
+CMD ["nginx", "-g", "daemon off;"]

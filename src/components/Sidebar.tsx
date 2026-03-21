@@ -1,6 +1,5 @@
 import { Home, Plus } from 'lucide-react';
-import {useEffect} from "react";
-import {getAllServers, useServers} from "../api/servers.ts";
+import {useServers} from "../api/servers.ts";
 
 type SidebarProps = {
     userId: number | null;
@@ -27,7 +26,7 @@ export function Sidebar({ userId }: SidebarProps) {
   //     getAllServersHandler()
   // }, [userId])
 
-    const {data: servers, isLoading, error, refetch} = useServers(userId)
+    const {data: servers } = useServers(userId)
     console.log('servers', servers)
   return (
     <div className="w-[72px] bg-[#202225] flex flex-col items-center py-3 gap-2">

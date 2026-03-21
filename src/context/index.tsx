@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import React, { createContext, useContext, type ReactNode, useState, useEffect } from 'react';
 import { socket, connectSocket, disconnectSocket } from '../services';
 
 interface SocketContextType {
@@ -62,6 +62,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSocket = () => {
     const context = useContext(SocketContext);
     if (!context) {

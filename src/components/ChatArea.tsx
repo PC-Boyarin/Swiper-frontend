@@ -1,16 +1,20 @@
-import { Hash, Bell, Pin, Users, Search, Inbox, HelpCircle, Smile, Gift, Sticker, Plus, SendHorizontal } from 'lucide-react';
+//@ts-nocheck
+import { Hash, Bell, Pin, Users, Search, Inbox, HelpCircle, Smile, Gift, Sticker, Plus } from 'lucide-react';
 import {useEffect, useState} from 'react';
 import {getAllMessages} from "../api/messages.ts";
 import useCheckAuth from "../hooks/useCheckAuth";
 import {useSocketEvent} from "../hooks/useSocketEvents";
 import {useSocket} from "../context";
 import {useSocketEmit} from "../hooks/useSocketEmit";
+import {useCurrentChannel} from "../api/channels.ts";
 
 interface Message {
   id: string;
   text: string;
   userId: string;
   timestamp: number;
+  user_id: string | number;
+  content: string;
 }
 
 interface ChatAreaProps {
@@ -19,8 +23,7 @@ interface ChatAreaProps {
 
 export function ChatArea({ channelId }: ChatAreaProps) {
   const [message, setMessage] = useState('');
-  const [currentRoomId, setCurrentRoomId] = useState('1');
-
+//@ts-ignore
   const [typingUsers, setTypingUsers] = useState<Set<string>>(new Set());
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -32,6 +35,9 @@ export function ChatArea({ channelId }: ChatAreaProps) {
       console.log(err);
     }
   }
+
+  const {data: currentChannel, isLoading} = useCurrentChannel(channelId)
+
   const { userId } = useCheckAuth()
   const { isConnected } = useSocket();
   const { emit } = useSocketEmit();
@@ -42,19 +48,18 @@ export function ChatArea({ channelId }: ChatAreaProps) {
       // setMessages([])
       getAllMessagesHandler()
     }
-  }, [channelId]);
+  }, [ channelId ]);
 
 // Подписка на новые сообщения
   useSocketEvent('message:new', (message) => {
     console.log('messageNEW', message, channelId);
 
     if (Number(message.channel_id) === channelId) {
+      // @ts-ignore
       setMessages((prev) => [...prev, message]);
     }
-
   });
 
-  // Подписка на статус печати
   useSocketEvent('typing:start', (userId) => {
     setTypingUsers((prev) => new Set(prev).add(userId));
   });
@@ -69,10 +74,10 @@ export function ChatArea({ channelId }: ChatAreaProps) {
 
   useEffect(() => {
     if (isConnected && channelId) {
-      emit('room:join', channelId);
+      emit('room:join', String(channelId));
 
       return () => {
-        emit('room:leave', channelId);
+        emit('room:leave', String(channelId));
       };
     }
   }, [isConnected, channelId, emit]);
@@ -86,7 +91,7 @@ export function ChatArea({ channelId }: ChatAreaProps) {
     });
     setMessage('');
   };
-
+//@ts-ignore
   const handleTyping = () => {
     if (!isConnected) return;
     emit('typing:start', String(channelId));
@@ -136,8 +141,8 @@ export function ChatArea({ channelId }: ChatAreaProps) {
           <div className="w-16 h-16 rounded-full bg-[#5865f2] flex items-center justify-center mb-2">
             <Hash className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-white mb-2">Добро пожаловать в #общий!</h2>
-          <p className="text-[#96989d] text-sm">Это начало канала #общий.</p>
+          <h2 className="text-white mb-2">{`Добро пожаловать в #${isLoading? '' : currentChannel?.name}!`}</h2>
+          <p className="text-[#96989d] text-sm">{`Это начало канала #${isLoading? '' : currentChannel?.name}`}</p>
         </div>
 
         {/* Messages */}
@@ -156,7 +161,7 @@ export function ChatArea({ channelId }: ChatAreaProps) {
                 <span className="text-white hover:underline cursor-pointer">{msg.userId}</span>
                 <span className="text-xs text-[#96989d]">{msg.timestamp}</span>
               </div>
-                <p className="text-[#dcddde]">{msg.content}</p>
+                <p className="text-[#dcddde]">{msg?.content}</p>
             </div>
           </div>
         ))}

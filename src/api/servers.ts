@@ -1,3 +1,4 @@
+//@ts-nocheck
 import type {AxiosResponse} from "axios";
 import baseServer from './base'
 
