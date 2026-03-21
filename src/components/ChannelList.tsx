@@ -54,7 +54,7 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
     try {
       const response = await getAllChannels({server_id: 2})
       if(response) {
-        setTextChannels(response?.data || [])
+        // setTextChannels(response?.data || [])
       }
     } catch (err) {
       console.log('getAllChannelsHandler', err);
