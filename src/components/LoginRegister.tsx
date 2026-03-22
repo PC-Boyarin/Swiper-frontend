@@ -34,10 +34,11 @@ export function LoginRegister({ onLogin, setUserId }: LoginRegisterProps) {
          }
 
          const response = isLogin ? await loginUser(body) : await createUser(body)
-         console.log('response?.data?.id', response?.data?.id)
+
          if(response?.data?.id) {
            setUserId(response?.data?.id)
          }
+
          return onLogin();
        }
      }

@@ -5,7 +5,7 @@ type SidebarProps = {
     userId?: number | null;
 }
 export function Sidebar({ userId }: SidebarProps) {
-    const {data: servers } = useServers(userId)
+    const {data: servers = [] } = useServers(userId)
 
   return (
     <div className="w-[72px] bg-[#202225] flex flex-col items-center py-3 gap-2">
@@ -20,11 +20,11 @@ export function Sidebar({ userId }: SidebarProps) {
       {/* Server Icons */}
       {servers?.map((server) => (
         <button
-          key={server.id}
+          key={server?.id}
           className="w-12 h-12 bg-[#36393f] hover:bg-[#5865f2] rounded-[24px] hover:rounded-[16px] transition-all duration-200 flex items-center justify-center group relative"
-          title={server.name}
+          title={server?.name}
         >
-          <span className="text-2xl">{server.icon}</span>
+          <span className="text-2xl">{server?.icon}</span>
         </button>
       )) || []}
 

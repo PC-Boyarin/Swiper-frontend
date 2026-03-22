@@ -1,10 +1,9 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Dialog, DialogContent, DialogHeader, DialogTitle} from "../../ui/dialog.tsx";
 import {Input} from "../../ui/input.tsx";
 import {Button} from "../../ui/button.tsx";
 import {ImageInput} from "../../customUi/ImageInput/ImageInput.tsx";
 import {updateUser} from "../../../api/user.ts";
-
 
 type EditUserPopupProps = {
     isOpen: boolean;
@@ -13,11 +12,16 @@ type EditUserPopupProps = {
 }
 export default function EditUserPopup({isOpen, onOpenChange, currentUser}: EditUserPopupProps) {
 
-    const [userName, setUserName] = useState(currentUser?.username || '');
+    const [username, setUsername] = useState('');
     const [selectedImage, setSelectedImage] = useState<{
         file: File | string;
         preview: string;
-    } | null>({file: '', preview: currentUser?.image_icon});
+    } | null>({file: '', preview: ''});
+
+    useEffect(() => {
+        setUsername(currentUser?.username);
+        setSelectedImage({file: '', preview: currentUser?.image_icon});
+    }, [currentUser])
 
     const handleImageSelect = (file: File, previewUrl: string) => {
         console.log("Selected:", file.name, file.size);
@@ -31,7 +35,7 @@ export default function EditUserPopup({isOpen, onOpenChange, currentUser}: EditU
     async function updateUserHandler() {
         try {
             const body = {
-                username: userName,
+                username: username,
                 image_icon: selectedImage?.preview,
                 user_id: currentUser?.id,
             }
@@ -53,8 +57,8 @@ export default function EditUserPopup({isOpen, onOpenChange, currentUser}: EditU
                 </DialogHeader>
                 <div className="flex flex-col gap-5">
                     <Input
-                        value={userName}
-                        onChange={e => setUserName(e.target.value)}
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
                         placeholder={'Username'}
                     />
 
