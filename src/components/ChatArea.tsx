@@ -232,32 +232,34 @@ export function ChatArea({ channelId }: ChatAreaProps) {
 
       {/* Message Input */}
       <div className="px-4 pb-6">
-        <div className="bg-[#40444b] rounded-lg px-4 py-3">
-          <div className="flex items-center gap-2">
-            <button className="hover:opacity-80">
-              <Plus className="w-6 h-6 text-[#b9bbbe]" />
-            </button>
-            <input
-              type="text"
-              placeholder="Написать в #общий"
-              value={message}
-              onKeyPress={handleKeyPress}
-              onChange={(e) => test(e.target.value)}
-              className="flex-1 bg-transparent text-white placeholder-[#72767d] focus:outline-none"
-            />
+        {channelId &&
+          <div className="bg-[#40444b] rounded-lg px-4 py-3">
             <div className="flex items-center gap-2">
               <button className="hover:opacity-80">
-                <Gift className="w-6 h-6 text-[#b9bbbe]" />
+                <Plus className="w-6 h-6 text-[#b9bbbe]" />
               </button>
-              <button className="hover:opacity-80">
-                <Sticker className="w-6 h-6 text-[#b9bbbe]" />
-              </button>
-              <button className="hover:opacity-80">
-                <Smile className="w-6 h-6 text-[#b9bbbe]" />
-              </button>
+              <input
+                  type="text"
+                  placeholder="Написать в #общий"
+                  value={message}
+                  onKeyPress={handleKeyPress}
+                  onChange={(e) => test(e.target.value)}
+                  className="flex-1 bg-transparent text-white placeholder-[#72767d] focus:outline-none"
+              />
+              <div className="flex items-center gap-2">
+                <button className="hover:opacity-80">
+                  <Gift className="w-6 h-6 text-[#b9bbbe]" />
+                </button>
+                <button className="hover:opacity-80">
+                  <Sticker className="w-6 h-6 text-[#b9bbbe]" />
+                </button>
+                <button className="hover:opacity-80">
+                  <Smile className="w-6 h-6 text-[#b9bbbe]" />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        }
         {/*{typingUsers.size > 0 && (*/}
         {/*  <div className="typing-indicator px-4 py-2 text-sm text-gray-400">*/}
         {/*    {Array.from(typingUsers).length === 1*/}

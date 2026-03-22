@@ -39,7 +39,13 @@ export function LoginRegister({ onLogin, setUserId }: LoginRegisterProps) {
            setUserId(response?.data?.id)
          }
 
-         return onLogin();
+         if (!isLogin && response) {
+           setIsLogin(true);
+         }
+
+         if (response && isLogin ) {
+           return onLogin();
+         }
        }
      }
    } catch (err) {
