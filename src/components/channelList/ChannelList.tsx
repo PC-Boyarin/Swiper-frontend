@@ -13,7 +13,7 @@ import EditUserPopup from "./components/editUserPopup.tsx";
 import {getCurrentUser} from "../../api/user.ts";
 
 type ChannelListType = {
-  userId: number | null
+  userId?: number | null
   setChannelId: React.Dispatch<React.SetStateAction<null | number>>
 }
 
@@ -68,7 +68,7 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
 
   async function getUserDataHandler() {
     try {
-      const response = await getCurrentUser({id: userId})
+      const response = await getCurrentUser({ id: userId })
       if(response) {
          setCurrentUser(response?.data)
       }
@@ -97,8 +97,10 @@ export function ChannelList({ userId, setChannelId }: ChannelListType) {
 
   useEffect(() => {
     getAllChannelsHandler()
-    getUserDataHandler()
-  }, [])
+    if(userId) {
+      getUserDataHandler()
+    }
+  }, [userId])
 
   return (
     <div className="flex relative">

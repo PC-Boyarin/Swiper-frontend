@@ -2,32 +2,11 @@ import { Home, Plus } from 'lucide-react';
 import {useServers} from "../api/servers.ts";
 
 type SidebarProps = {
-    userId: number | null;
+    userId?: number | null;
 }
 export function Sidebar({ userId }: SidebarProps) {
-  // const servers = [
-  //   { id: 1, name: 'Сервер 1', icon: '🎮' },
-  //   { id: 2, name: 'Сервер 2', icon: '🎨' },
-  //   { id: 3, name: 'Сервер 3', icon: '🎵' },
-  //   { id: 4, name: 'Сервер 4', icon: '📚' },
-  //   { id: 5, name: 'Сервер 5', icon: '⚡' },
-  // ];
-
-  // async function getAllServersHandler() {
-  //     try {
-  //         const response = await getAllServers({user_id: userId});
-  //         console.log(response?.data);
-  //     } catch (err) {
-  //         console.error('getAllServers', err);
-  //     }
-  // }
-  //
-  // useEffect(() => {
-  //     getAllServersHandler()
-  // }, [userId])
-
     const {data: servers } = useServers(userId)
-    // console.log('servers', servers)
+
   return (
     <div className="w-[72px] bg-[#202225] flex flex-col items-center py-3 gap-2">
       {/* Home Button */}

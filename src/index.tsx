@@ -8,7 +8,7 @@ import {useEffect, useState} from "react";
 interface MainWrapperProps {
     isLoggedIn: boolean | null
     isLoading: boolean
-    userId: number | null
+    userId?: number | null
 }
 
 interface LoaderHandlerProps {
@@ -24,17 +24,16 @@ function LoaderHandler({isLoading, children}: LoaderHandlerProps) {
     return <>{children}</>
 }
 
-export default function MainWrapper({isLoading, isLoggedIn, userId}: MainWrapperProps) {
-
+export default function MainWrapper({isLoading, isLoggedIn, userId: user_id}: MainWrapperProps) {
     const [isLogged, setIsLogged] = useState<boolean | null>(isLoggedIn)
     const [channelId, setChannelId] = useState<null | number>(null);
+    const [userId, setUserId] = useState<number | null>(null)
 
     useEffect(() => {
 
         if(isLoggedIn) {
             setIsLogged(isLoggedIn)
         }
-
     }, [isLoggedIn]);
 
     return (
@@ -42,12 +41,18 @@ export default function MainWrapper({isLoading, isLoggedIn, userId}: MainWrapper
             <LoaderHandler isLoading={isLoading}>
                 {isLogged && !isLoading ? (
                     <div className="flex h-screen bg-[#36393f] text-yellow">
-                        <Sidebar userId={userId} />
-                        <ChannelList userId={userId} setChannelId={setChannelId}/>
+                        <Sidebar userId={userId || user_id} />
+                        <ChannelList
+                            setChannelId={setChannelId}
+                            userId={userId || user_id}
+                        />
                         <ChatArea channelId={channelId}/>
                     </div>
                 ) : (
-                    <LoginRegister onLogin={() => setIsLogged(true)} />
+                    <LoginRegister
+                        onLogin={() => setIsLogged(true)}
+                        setUserId={setUserId}
+                    />
                 )}
             </LoaderHandler>
         </div>
